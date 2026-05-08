@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แชท Instagram</title>
+    <style>
+        /* โค้ด CSS ที่สะอาดและอ่านง่าย */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 22px;
+        }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            border-color: #0095f6;
+        }
+
+        .chat-list {
+            display: flex;
+            flex-direction: column-reverse;
+            /* สลับลำดับจากล่างขึ้นบน */
+            gap: 10px;
+        }
+
+        .chat-item {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            transition: background 0.2s;
+        }
+
+        .chat-item:hover {
+            background: #f9f9f9;
+        }
+
+        .chat-item a {
+            text-decoration: none;
+            color: #262626;
+            font-weight: bold;
+            font-size: 16px;
+            display: block;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>💬 แชท Instagram</h1>
+
+        <!-- ช่องค้นหา -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อแชท..."
+                onkeyup="filterChats()">
+        </div>
+
+        <!-- รายการแชท (ตั้งค่า CSS ให้เรียงจากล่างขึ้นบนแล้ว) -->
+        <div class="chat-list" id="chatList">
+            <div class="chat-item"><a
+                    href="inbox/17931922481968576/message_1.html">(ไม่มีชื่อ)</a></div>
+            <div class="chat-item"><a
+                    href="inbox/11hnxmi_8173389826040725/message_1.html">11หน่อไม้</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/16fqfxzphuchiinstagramanittawaniand4others_10009179829174181/message_1.html">16fqfxz,
+                    ผู้ใช้ Instagram, Anitta Wani and 4 others</a></div>
+            <div class="chat-item"><a
+                    href="inbox/19s07quck_17904232079968576/message_1.html">19s.07quck</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/25dec_17859138689968576/message_1.html">25 Dec.</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/4yue19ri_17900472419968576/message_1.html">4月19日</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/1063218838570014/message_1.html">?</a></div>
+            <div class="chat-item"><a
+                    href="inbox/anittawani_17856829667968576/message_1.html">Anitta
+                    Wani</a></div>
+            <div class="chat-item"><a
+                    href="inbox/anittawanimeeeeeeandaliadq_xq_10041247449265022/message_1.html">Anitta
+                    Wani, meeeeee and aliadq_xq</a></div>
+            <div class="chat-item"><a
+                    href="inbox/areeyachumnanjan_17918590997968576/message_1.html">Areeya
+                    Chumnanjan</a></div>
+            <div class="chat-item"><a
+                    href="inbox/bam_thanphitcha_17916945050968576/message_1.html">Bam_Thanphitcha</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/besutip_17861885699968576/message_1.html">Be Sutip</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/fara_17880220526968576/message_1.html">FA RA</a></div>
+            <div class="chat-item"><a
+                    href="inbox/fxi_17901457262968576/message_1.html">Fxi</a></div>
+            <div class="chat-item"><a
+                    href="inbox/hasnitakhannhak_17949385682968576/message_1.html">Hasnita
+                    Khannhak</a></div>
+            <div class="chat-item"><a
+                    href="inbox/hasnitakhannhakandanittawani_9749243658500890/message_1.html">Hasnita
+                    Khannhak and Anitta Wani</a></div>
+            <div class="chat-item"><a
+                    href="inbox/jhazz_17935326410968576/message_1.html">Jhazz</a></div>
+            <div class="chat-item"><a
+                    href="inbox/k_17947137809968576/message_1.html">K</a></div>
+            <div class="chat-item"><a
+                    href="inbox/kanokratmatthayamart_17917367258968576/message_1.html">Kanokrat
+                    Matthayamart</a></div>
+            <div class="chat-item"><a
+                    href="inbox/lovencrepes_1198802738184837/message_1.html">LOVE
+                    N’CREPES💗</a></div>
+            <div class="chat-item"><a
+                    href="inbox/meiyingsuthidachangkaew_18020633855508394/message_1.html">Meiying
+                    Suthida Changkaew</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nasrinmadaoh_17864639339968576/message_1.html">Nasrin
+                    Mada-oh</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nasrintasa_17942560997968576/message_1.html">Nasrin
+                    Tasa</a></div>
+            <div class="chat-item"><a
+                    href="inbox/natachawaeasae_17858133485968576/message_1.html">Natacha
+                    Wae-asae</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nousersforthisaccount_1492304752175619/message_1.html">No
+                    users for this account.</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nousersforthisaccountkulisraphuchiinstagramand4others_9190491531060194/message_1.html">No
+                    users for this account., กุลิสรา ฯ., ผู้ใช้ Instagram and 4 others</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nousersforthisaccountphuchiinstagramx_wichayapornand10others_9985698664827899/message_1.html">No
+                    users for this account., ผู้ใช้ Instagram, x._wichayaporn and 10 others</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nutcharinjantalun_18034288310155874/message_1.html">Nutcharin
+                    Jantalun</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nxmping_17942590781968576/message_1.html">Nxmping</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/sarah_18036438809297682/message_1.html">Sarah✮</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/_afiraf_17902736597968576/message_1.html">_.afiraf</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/_namwhan_chn_18027258191215624/message_1.html">_Namwhan_Chn.</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/aliadq_xq_17939252789968576/message_1.html">aliadq_xq</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/arif_5571_17950294847968576/message_1.html">arif_5571</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/aungax__17900692379968576/message_1.html">aung.ax_</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/azuq__17888325842968576/message_1.html">azuq._</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/cha_17883159686968576/message_1.html">cha</a></div>
+            <div class="chat-item"><a
+                    href="inbox/fatiinney_17916901046968576/message_1.html">fatiinney</a>
+            </div>
+            <div class="chat-item"><a
+                    href="message_requests/firan_zq_1429471148445668/message_1.html">firan_zq</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/jenomuay__17932049555968576/message_1.html">jenomuay_</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/kh_17896449221968576/message_1.html">kh</a></div>
+            <div class="chat-item"><a
+                    href="inbox/lasimah_17860948487968576/message_1.html">lasimah</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/mang_agm_17902106798968576/message_1.html">mang_agm</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/meeeeee_17917602509968576/message_1.html">meeeeee</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/meoww_17932044158968576/message_1.html">meow‘w</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/mochimochicatnip_17890499864968576/message_1.html">mochimochicatnip</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/moji_17861329532968576/message_1.html">moji</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nathaixatq__17916899276968576/message_1.html">nathaixatq_</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/nuseeta_17942705726968576/message_1.html">nuseeta</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/panja_08_17983285142767277/message_1.html">panja_.08</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/plammyyyyy_17901315776968576/message_1.html">plammyyyyy</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/riauecy_17842848456382795/message_1.html">riauecy</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/s3lmxzuiq_17945626532968576/message_1.html">s3lmxzuiq</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/sawaddeekubkonlewmalaew_17931640469968576/message_1.html">sawaddeekubkonlewmalaew</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/wanqing_17940977405924892/message_1.html">wǎnqíng。</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/ziexmoo_18002489690698056/message_1.html">ziexmoo</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/er_17933681936968576/message_1.html">ér</a></div>
+            <div class="chat-item"><a
+                    href="inbox/su_1584266762969688/message_1.html">ɴᴀ̈ᴛsű</a></div>
+            <div class="chat-item"><a
+                    href="inbox/__17879489805177540/message_1.html">ɴᴜʀᴀɪɴ_✧</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17947077518968576/message_1.html">ɴᴜʀꜰᴀᴅɪᴀ ꜱᴇʜ</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/khunhmxxx_8570145563105120/message_1.html">คุณหมอออ💗</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/khayhadhiy_9998298326888140/message_1.html">ค่ายหาดใหญ่💉🩺</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/carukicbuyluk_18035966666363326/message_1.html">จารุกิจ
+                    บุญลึก</a></div>
+            <div class="chat-item"><a
+                    href="inbox/sindicarabay_9657331204348768/message_1.html">ซินดี้จะระบาย</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/dxnnratnaty_17936496062968576/message_1.html">ดอน’น
+                    รัต’ นัตย์</a></div>
+            <div class="chat-item"><a
+                    href="inbox/thripmilmlaewna_27659809990333701/message_1.html">ทริปไม่ล่มแล้วนะ</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/thayhmu7_9563051343821130/message_1.html">ท้ายหมู่7💋💯💖</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/nxngmddaeng_17945632835968576/message_1.html">น้องมดแดง
+                    🌀</a></div>
+            <div class="chat-item"><a
+                    href="inbox/nxngbifeinbebibikbxy_17929714619968576/message_1.html">น้องใบเฟินเบบี้บิ้กบอย</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/naprapapan_17904239609968576/message_1.html">น้ำประปาปั่น</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/buwabuwa_8536676229794075/message_1.html">บูวาบูวา😉</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/phuchiinstagram_17949772904968576/message_1.html">ผู้ใช้
+                    Instagram</a></div>
+            <div class="chat-item"><a
+                    href="inbox/phuchiinstagram_17945628500968576/message_1.html">ผู้ใช้
+                    Instagram</a></div>
+            <div class="chat-item"><a
+                    href="inbox/phicha_17948260601968576/message_1.html">พิช่า🐱</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/phingkhphi_17917454084968576/message_1.html">พิ้งค์ไผ่</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/phifomrunhiynxngxungtitin_9384502614906148/message_1.html">พี่โฟมรุ่นใหย่น้องอุ๋งใต้ตีน</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/riduwanmayusoa_17945892797968576/message_1.html">รีดูวัน
+                    มะยูโซะ</a></div>
+            <div class="chat-item"><a
+                    href="inbox/linnohlin_17942910620968576/message_1.html">ลินโนหลิน</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/walikahama_999772148206917/message_1.html">วาลิกา
+                    หามะ</a></div>
+            <div class="chat-item"><a
+                    href="inbox/siwaphrsantiwathnaphr_17917565999968576/message_1.html">ศิวาพร
+                    สันติวัฒนาพร</a></div>
+            <div class="chat-item"><a
+                    href="inbox/skxykhxthankamalxtitinku_9652058371526918/message_1.html">สก๊อยขอทานกำมะลอใต้ตีนกู</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/xrayyasaengcanthr_17859406881254043/message_1.html">อรัญญา
+                    แสงจันทร์👀🔮</a></div>
+            <div class="chat-item"><a
+                    href="inbox/xeingxey_17942894201968576/message_1.html">เอิงเอย</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/naennaennaennaen_17945627900968576/message_1.html">แนนแน่นแน๋นแน๊น</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/xaed_8054961627855459/message_1.html">แอด</a></div>
+            <div class="chat-item"><a
+                    href="inbox/honkrasae_29012120145070645/message_1.html">โหนกระแส</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/khirtxhaelykmuxkhun_9707377536044808/message_1.html">ใครตอแหลยกมือขึ้น🤭🤭</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/xibi_17912118680968576/message_1.html">ไอ้ใบ⚡️</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/21_18006752003693379/message_1.html">๒๑</a></div>
+            <div class="chat-item"><a
+                    href="inbox/1246401143432059/message_1.html">ᴍᴀʀɪʏᴀ ᴄʜᴇᴡᴀᴇ</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/17883012032968576/message_1.html">ᴘʜᴀᴛ🐶</a></div>
+            <div class="chat-item"><a
+                    href="inbox/jay_17945631131968576/message_1.html">‎جاي‎</a></div>
+            <div class="chat-item"><a
+                    href="inbox/htylwtghyralzmnalqlbybqykmahw_17945328365968576/message_1.html">‎حتى
+                    لو تغير الزمن، القلب يبقى كما هو‎</a></div>
+            <div class="chat-item"><a
+                    href="inbox/mstqym_17886583829968576/message_1.html">‎مستقيم‎</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/m_17901147002945720/message_1.html">Ⓜ️</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17945628317968576/message_1.html">⠀</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17933041586968576/message_1.html">⠀</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17907647027968576/message_1.html">⠀</a></div>
+            <div class="chat-item"><a
+                    href="inbox/taifuu_17902388609968576/message_1.html">たいふう</a></div>
+            <div class="chat-item"><a
+                    href="inbox/xinxin_17876216159968576/message_1.html">欣欣</a></div>
+            <div class="chat-item"><a
+                    href="inbox/yangqin_17882243108968576/message_1.html">洋琴</a></div>
+            <div class="chat-item"><a
+                    href="inbox/chan_17933680943968576/message_1.html">禅</a></div>
+            <div class="chat-item"><a
+                    href="inbox/kaopang_1393773108677894/message_1.html">카오팡</a></div>
+            <div class="chat-item"><a
+                    href="inbox/patini_17926711775968576/message_1.html">파티니🍀</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/17920354172968576/message_1.html">️️</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17937566267891578/message_1.html">𓍼ོ</a></div>
+            <div class="chat-item"><a
+                    href="inbox/ranny_1221762042647345/message_1.html">𝑟𝑎𝑛𝑛𝑦</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/ya_17862949733968576/message_1.html">𝔂𝓪</a></div>
+            <div class="chat-item"><a
+                    href="inbox/247_17901621590968576/message_1.html">𝟮𝟰/𝟳</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17842973397326707/message_1.html">🌻</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17942174279968576/message_1.html">🐰𓈒˚̶͙ ♡⃘ 𓈒ﾟ✿̵</a>
+            </div>
+            <div class="chat-item"><a
+                    href="inbox/8667488299941386/message_1.html">👀👀👀</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17967267650710679/message_1.html">💧</a></div>
+            <div class="chat-item"><a
+                    href="inbox/1083822829758741/message_1.html">🥞</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17857898631423881/message_1.html">🦦</a></div>
+            <div class="chat-item"><a
+                    href="inbox/17924154041754135/message_1.html">🪭</a></div>
+        </div>
+
+        <div id="emptyState" class="empty-state">ไม่พบแชทที่คุณค้นหา...</div>
+    </div>
+
+    <!-- สคริปต์สำหรับการค้นหาแชท -->
+    <script>
+        function filterChats() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let chatItems = document.getElementsByClassName('chat-item');
+            let hasVisible = false;
+
+            for (let i = 0; i < chatItems.length; i++) {
+                let link = chatItems[i].querySelector('a');
+                
+                // เก็บข้อความต้นฉบับไว้ใน attribute data-original-text เพื่อไม่ให้เสียข้อมูลเวลา highlight
+                if (!link.hasAttribute('data-original-text')) {
+                    link.setAttribute('data-original-text', link.innerText);
+                }
+                
+                let originalText = link.getAttribute('data-original-text');
+                let chatName = originalText.toLowerCase();
+
+                if (input === "") {
+                    // กรณีไม่ได้พิมพ์ค้นหา ให้แสดงทั้งหมดและยกเลิก highlight
+                    chatItems[i].style.display = "block";
+                    link.innerHTML = originalText;
+                    hasVisible = true;
+                } else if (chatName.includes(input)) {
+                    // กรณีพบคำค้นหา ให้ไฮไลท์ข้อความ
+                    chatItems[i].style.display = "block";
+                    hasVisible = true;
+                    
+                    // ป้องกัน special characters ใน regex
+                    let escapedInput = input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    let regex = new RegExp(`(${escapedInput})`, "gi");
+                    
+                    // แทนที่คำค้นหาด้วยแท็ก <mark> เพื่อไฮไลท์
+                    link.innerHTML = originalText.replace(regex, "<mark style='background-color: #ffeb3b; color: #000; padding: 0 2px; border-radius: 3px;'>$1</mark>");
+                } else {
+                    // กรณีไม่พบ ให้ซ่อนแชทนั้น
+                    chatItems[i].style.display = "none";
+                    link.innerHTML = originalText;
+                }
+            }
+
+            // แสดงข้อความ "ไม่พบแชท" ถ้าหาไม่เจอเลย
+            document.getElementById('emptyState').style.display = hasVisible ? 'none' : 'block';
+        }
+    </script>
+
+</body>
+
+</html>
