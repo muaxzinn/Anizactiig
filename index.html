@@ -483,6 +483,9 @@
                     const badge = link.querySelector('.match-badge');
                     if (badge) badge.remove();
                     
+                    const snippets = chatItems[i].querySelector('.match-snippets');
+                    if (snippets) snippets.remove();
+                    
                     // Reset href
                     let href = link.getAttribute('href');
                     if (href.includes('?q=')) {
@@ -515,19 +518,34 @@
                     // Count matches in message texts
                     const messages = doc.querySelectorAll('._a6-p');
                     let matchCount = 0;
+                    let foundSnippets = [];
                     
                     messages.forEach(msg => {
-                        const text = msg.textContent.toLowerCase();
+                        const originalText = msg.textContent;
+                        // ไม่นับข้อความที่มี hashtag (#)
+                        if (originalText.includes('#')) return;
+                        
+                        const text = originalText.toLowerCase();
                         let currentIndex = 0;
                         while ((currentIndex = text.indexOf(input, currentIndex)) !== -1) {
                             matchCount++;
+                            if (foundSnippets.length < 10) {
+                                const start = Math.max(0, currentIndex - 20);
+                                const end = Math.min(text.length, currentIndex + input.length + 20);
+                                let snippet = originalText.substring(start, end);
+                                if (start > 0) snippet = "..." + snippet;
+                                if (end < text.length) snippet = snippet + "...";
+                                foundSnippets.push(snippet);
+                            }
                             currentIndex += input.length;
                         }
                     });
                     
-                    // Clean up old badge
+                    // Clean up old badge and snippets
                     const oldBadge = link.querySelector('.match-badge');
                     if (oldBadge) oldBadge.remove();
+                    const oldSnippets = chatItems[i].querySelector('.match-snippets');
+                    if (oldSnippets) oldSnippets.remove();
                     
                     if (matchCount > 0) {
                         chatItems[i].style.display = "block";
@@ -537,6 +555,33 @@
                         badge.style.cssText = 'background: #ff9800; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold; display: inline-block; vertical-align: middle;';
                         badge.textContent = `พบ ${matchCount} คำ`;
                         link.appendChild(badge);
+                        
+                        // Add snippets
+                        const snippetContainer = document.createElement('div');
+                        snippetContainer.className = 'match-snippets';
+                        snippetContainer.style.cssText = 'margin-top: 10px; font-size: 14px; color: #555; background: #f9f9f9; padding: 10px; border-radius: 8px; border-left: 3px solid #0095f6;';
+                        
+                        const escapedInput = input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        const regex = new RegExp(`(${escapedInput})`, "gi");
+                        
+                        foundSnippets.forEach(snip => {
+                            const p = document.createElement('div');
+                            p.style.marginBottom = '4px';
+                            p.innerHTML = snip.replace(regex, "<mark style='background-color: #ffeb3b; padding: 0 2px;'>$1</mark>");
+                            snippetContainer.appendChild(p);
+                        });
+                        
+                        if (matchCount > 10) {
+                            const more = document.createElement('div');
+                            more.style.fontStyle = 'italic';
+                            more.style.fontSize = '12px';
+                            more.style.color = '#888';
+                            more.style.marginTop = '4px';
+                            more.textContent = `และอีก ${matchCount - 10} ข้อความ...`;
+                            snippetContainer.appendChild(more);
+                        }
+                        
+                        chatItems[i].appendChild(snippetContainer);
                         
                         link.setAttribute('href', href + '?q=' + encodeURIComponent(input));
                         foundCount++;
