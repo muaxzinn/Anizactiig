@@ -95,6 +95,13 @@
         <div class="search-container">
             <input type="text" id="searchInput" class="search-box" placeholder="🔍 ค้นหาชื่อแชท..."
                 onkeyup="filterChats()">
+                
+            <!-- ค้นหาในทุกแชท (Global Search) -->
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                <input type="text" id="globalSearchInput" class="search-box" placeholder="🌍 ค้นหาข้อความในทุกแชท..." onkeyup="if(event.key === 'Enter') doGlobalSearch()">
+                <button onclick="doGlobalSearch()" style="padding: 12px 20px; border: none; border-radius: 25px; background: #0095f6; color: white; font-weight: bold; cursor: pointer; white-space: nowrap;">ค้นหาทั้งหมด</button>
+            </div>
+            <div id="globalSearchStatus" style="margin-top: 10px; font-size: 14px; color: #0095f6; font-weight: bold; display: none;">กำลังค้นหา...</div>
         </div>
 
         <!-- รายการแชท (ตั้งค่า CSS ให้เรียงจากล่างขึ้นบนแล้ว) -->
@@ -460,6 +467,90 @@
 
             // แสดงข้อความ "ไม่พบแชท" ถ้าหาไม่เจอเลย
             document.getElementById('emptyState').style.display = hasVisible ? 'none' : 'block';
+        }
+
+        async function doGlobalSearch() {
+            const input = document.getElementById('globalSearchInput').value.trim().toLowerCase();
+            const statusEl = document.getElementById('globalSearchStatus');
+            const chatItems = document.getElementsByClassName('chat-item');
+            
+            if (!input) {
+                statusEl.style.display = 'none';
+                document.getElementById('emptyState').style.display = 'none';
+                // Reset UI
+                for (let i = 0; i < chatItems.length; i++) {
+                    const link = chatItems[i].querySelector('a');
+                    const badge = link.querySelector('.match-badge');
+                    if (badge) badge.remove();
+                    
+                    // Reset href
+                    let href = link.getAttribute('href');
+                    if (href.includes('?q=')) {
+                        link.setAttribute('href', href.split('?')[0]);
+                    }
+                    chatItems[i].style.display = "block";
+                }
+                return;
+            }
+
+            statusEl.style.display = 'block';
+            statusEl.innerHTML = 'กำลังค้นหา... 0 / ' + chatItems.length;
+            
+            let foundCount = 0;
+
+            for (let i = 0; i < chatItems.length; i++) {
+                statusEl.innerHTML = `กำลังค้นหา... ${i+1} / ${chatItems.length}`;
+                
+                const link = chatItems[i].querySelector('a');
+                let href = link.getAttribute('href').split('?')[0]; // Remove existing query if any
+                
+                try {
+                    const response = await fetch(href);
+                    const html = await response.text();
+                    
+                    // Simple DOM parser to get text content from messages
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    
+                    // Count matches in message texts
+                    const messages = doc.querySelectorAll('._a6-p');
+                    let matchCount = 0;
+                    
+                    messages.forEach(msg => {
+                        const text = msg.textContent.toLowerCase();
+                        let currentIndex = 0;
+                        while ((currentIndex = text.indexOf(input, currentIndex)) !== -1) {
+                            matchCount++;
+                            currentIndex += input.length;
+                        }
+                    });
+                    
+                    // Clean up old badge
+                    const oldBadge = link.querySelector('.match-badge');
+                    if (oldBadge) oldBadge.remove();
+                    
+                    if (matchCount > 0) {
+                        chatItems[i].style.display = "block";
+                        
+                        const badge = document.createElement('span');
+                        badge.className = 'match-badge';
+                        badge.style.cssText = 'background: #ff9800; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 10px; font-weight: bold; display: inline-block; vertical-align: middle;';
+                        badge.textContent = `พบ ${matchCount} คำ`;
+                        link.appendChild(badge);
+                        
+                        link.setAttribute('href', href + '?q=' + encodeURIComponent(input));
+                        foundCount++;
+                    } else {
+                        chatItems[i].style.display = "none";
+                        link.setAttribute('href', href);
+                    }
+                } catch (e) {
+                    console.error("Error fetching " + href, e);
+                }
+            }
+            
+            statusEl.innerHTML = `✅ ค้นหาเสร็จสิ้น! พบคำว่า "${input}" ใน ${foundCount} แชท`;
+            document.getElementById('emptyState').style.display = foundCount === 0 ? 'block' : 'none';
         }
     </script>
 
